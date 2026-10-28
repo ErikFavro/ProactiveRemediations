@@ -11,8 +11,8 @@
 #get CCMCache path
 $Cachepath = ([wmi]"ROOT\ccm\SoftMgmtAgent:CacheConfig.ConfigKey='Cache'").Location
 
-#Get Items not referenced for more than 30 days
-$OldCache = get-wmiobject -query "SELECT * FROM CacheInfoEx" -namespace "ROOT\ccm\SoftMgmtAgent" | Where-Object { ([datetime](Date) - ([System.Management.ManagementDateTimeConverter]::ToDateTime($_.LastReferenced))).Days -gt 30  }
+#Get Items not referenced for more than 15 days
+$OldCache = get-wmiobject -query "SELECT * FROM CacheInfoEx" -namespace "ROOT\ccm\SoftMgmtAgent" | Where-Object { ([datetime](Date) - ([System.Management.ManagementDateTimeConverter]::ToDateTime($_.LastReferenced))).Days -gt 15  }
 
 #report old Items
-if($OldCache) { $false } else { $true } 
+if($OldCache) { Exit 1 } else { Exit 0 } 

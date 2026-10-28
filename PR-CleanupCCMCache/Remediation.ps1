@@ -10,8 +10,8 @@
 #get CCMCache path
 $Cachepath = ([wmi]"ROOT\ccm\SoftMgmtAgent:CacheConfig.ConfigKey='Cache'").Location
 
-#Get Items not referenced for more than 30 days
-$OldCache = get-wmiobject -query "SELECT * FROM CacheInfoEx" -namespace "ROOT\ccm\SoftMgmtAgent" | Where-Object { ([datetime](Date) - ([System.Management.ManagementDateTimeConverter]::ToDateTime($_.LastReferenced))).Days -gt 30  }
+#Get Items not referenced for more than 15 days
+$OldCache = get-wmiobject -query "SELECT * FROM CacheInfoEx" -namespace "ROOT\ccm\SoftMgmtAgent" | Where-Object { ([datetime](Date) - ([System.Management.ManagementDateTimeConverter]::ToDateTime($_.LastReferenced))).Days -gt 15  }
 
 #delete Items on Disk
 $OldCache | % { Remove-Item -Path $_.Location -Recurse -Force -ea SilentlyContinue }
